@@ -11,16 +11,25 @@ function iniciar(){
     <section class="cajaInicio">
       <img src="./img/img_libro_rojo.png" alt="Imagen de libro">
       <input type="text" placeholder=" Nombre o Nick" id="inputNick">
-      <input type="text" placeholder=" E-mail" id="inputEmail">
-      <input type="password" placeholder=" Password" id="inputEmail">
-      <button id="botonInicio">Log in</button>
+      <input type="text" placeholder=" Correo Electronico" id="inputEmail">
+      <input type="password" placeholder=" Contraseña" id="inputPassword">
+      <button id="botonInicio">Ingresar</button>
       <hr style="width:100%;text-align:center">
       <button id="botonInicioGoogle"><img src="./img/btn_google_signin.png" alt="boton de google" class="imgButton"></button>
-      <p class="textoCrearCuenta">Dont have an account?
-      <a id="botonRegistrar" href="#"> Register</a></p>
+      <p class="textoCrearCuenta">¿No tienes una cuenta?
+      <a id="botonRegistrar" href="#"> Registrate</a></p>
     </section>
   </main> 
   `
+  const botonRegistrar = document.getElementById("botonRegistrar")
+  botonRegistrar.addEventListener("click",()=>{
+    const inputNick = document.getElementById("inputNick")
+    const botonInicio = document.getElementById("botonInicio")
+    const textoCrearCuenta = document.querySelector(".textoCrearCuenta")
+    inputNick.style.display = "block"
+    botonInicio.innerHTML = "Registrarse"
+    textoCrearCuenta.style.display = "none"
+  })
 }
 
 iniciar()
