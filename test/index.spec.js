@@ -17,8 +17,6 @@ jest.mock('../src/firebaseConfig.js', () => ({
   GoogleAuthProvider: jest.fn(),
 }));
 
-global.alert = jest.fn()
-
 // limpia todos los mocks en cada uso
 beforeEach(() => {
   jest.clearAllMocks();
