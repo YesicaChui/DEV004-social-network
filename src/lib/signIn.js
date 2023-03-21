@@ -20,8 +20,5 @@ export const signIn = (email, password) => signInWithEmailAndPassword(auth, emai
   })
   // si guarda los datos con exito retorna true
   .then(() => true)
-  .catch((error) => {
-    console.log(error)
-    // si hay error en el login retornamos false
-    return false;
-  });
+  // si hay un error en alguna promesa anterior retorna false
+  .catch(() => false);

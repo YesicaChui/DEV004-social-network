@@ -1,6 +1,7 @@
 // importamos la funcion que vamos a testear
 import { signIn } from '../src/lib/signIn.js'
 import { signUp } from '../src/lib/signUp.js'
+import { registerGoogle } from '../src/lib/registerGoogle.js'
 import * as barrel from '../src/firebaseConfig.js'
 // indico que funciones no debe de leer de firebaseConfig y simulando falseando las funciones de firebase
 jest.mock('../src/firebaseConfig.js', () => ({
@@ -12,6 +13,8 @@ jest.mock('../src/firebaseConfig.js', () => ({
   createUserWithEmailAndPassword: jest.fn(),
   signInWithEmailAndPassword: jest.fn(),
   initializeApp: jest.fn(),
+  signInWithPopup: jest.fn(),
+  GoogleAuthProvider: jest.fn(),
 }));
 
 global.alert = jest.fn()
@@ -55,5 +58,24 @@ describe('signUp', () => {
     // si es incorrecto el registro con usuario y contraseña resuelve con un objeto 
     // que en la clave resultado es false y en mensaje indicamos undefined porque no es relevante el mensaje
     await expect(signUp()).resolves.toStrictEqual({ resultado: false, code: undefined });
+  })
+})
+
+describe('registerGoogle', () => {
+  it('debería ser una función', () => {
+    expect(typeof registerGoogle).toBe('function')
+  })
+  it('usuario registrado', async () => {
+    // indicamos como estamos mockeando la funcion en este caso nos retorna un objeto cuando se resuleve la promesa
+    barrel.signInWithPopup.mockImplementation(jest.fn(() => Promise.resolve({ user: { uid: '3zs*MOCK*sT2' } })))
+    // si es correcto el registro con usuario y contraseña resuelve con un objeto que en la clave resultado es true
+    await expect(registerGoogle()).resolves.toStrictEqual(true);
+  })
+  it('error', async () => {
+    // para el caso de error segun el error mostramos el mensaje
+    barrel.signInWithPopup.mockImplementation(jest.fn(() => Promise.resolve({ errorMessage: { message: 'MOCKerror' } })))
+    // si es incorrecto el registro con usuario y contraseña resuelve con un objeto 
+    // que en la clave resultado es false y en mensaje indicamos undefined porque no es relevante el mensaje
+    await expect(registerGoogle()).resolves.toStrictEqual(false);
   })
 })
