@@ -68,14 +68,13 @@ describe('registerGoogle', () => {
   it('usuario registrado', async () => {
     // indicamos como estamos mockeando la funcion en este caso nos retorna un objeto cuando se resuleve la promesa
     barrel.signInWithPopup.mockImplementation(jest.fn(() => Promise.resolve({ user: { uid: '3zs*MOCK*sT2' } })))
-    // si es correcto el registro con usuario y contraseña resuelve con un objeto que en la clave resultado es true
+    // si es correcto el registro con google retorna true
     await expect(registerGoogle()).resolves.toStrictEqual(true);
   })
   it('error', async () => {
     // para el caso de error segun el error mostramos el mensaje
     barrel.signInWithPopup.mockImplementation(jest.fn(() => Promise.resolve({ errorMessage: { message: 'MOCKerror' } })))
-    // si es incorrecto el registro con usuario y contraseña resuelve con un objeto 
-    // que en la clave resultado es false y en mensaje indicamos undefined porque no es relevante el mensaje
-    await expect(registerGoogle()).resolves.toStrictEqual(false);
+    // si es incorrecto el registro con google retorna false 
+       await expect(registerGoogle()).resolves.toStrictEqual(false);
   })
 })

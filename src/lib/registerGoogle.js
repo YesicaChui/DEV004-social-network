@@ -11,7 +11,7 @@ export const registerGoogle = async () => {
   try {
     // muestro el popup de logeo con google
     const credentials = await signInWithPopup(auth, provider);
-    console.log('Tus credenciales son:', credentials);
+    console.log('Tus credenciales son:', credentials.user.email);
     return true;
   } catch (error) {
     return false;
