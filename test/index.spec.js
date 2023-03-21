@@ -2,7 +2,7 @@
 import { signIn } from '../src/lib/signIn.js'
 import { signUp } from '../src/lib/signUp.js'
 import * as barrel from '../src/firebaseConfig.js'
-
+// indico que funciones no debe de leer de firebaseConfig y simulando falseando las funciones de firebase
 jest.mock('../src/firebaseConfig.js', () => ({
   getAuth: jest.fn(),
   getDatabase: jest.fn(),
@@ -16,6 +16,7 @@ jest.mock('../src/firebaseConfig.js', () => ({
 
 global.alert = jest.fn()
 
+// limpia todos los mocks en cada uso
 beforeEach(() => {
   jest.clearAllMocks();
 });
@@ -25,13 +26,15 @@ describe('signIn', () => {
     expect(typeof signIn).toBe('function')
   })
   it('usuario logueado', async () => {
+    // indicamos como estamos mockeando la funcion en este caso nos retorna un objeto cuando se resuleve la promesa
     barrel.signInWithEmailAndPassword.mockImplementation(jest.fn(() => Promise.resolve({ user: { uid: '3zs*MOCK*sT2' } })))
-    // expect(signIn()).toEqual(Promise.resolve(false))
+    // si es correcto el login con usuario y contraseña resuelve con true
     await expect(signIn()).resolves.toStrictEqual(true);
   })
   it('error', async () => {
+    // indicamos como estamos mockeando la funcion en este caso nos retorna un objeto cuando se resuleve la promesa
     barrel.signInWithEmailAndPassword.mockImplementation(jest.fn(() => Promise.resolve({ errorMessage: { message: 'MOCKerror' } })))
-    // expect(signIn()).toEqual(Promise.resolve())
+    // si es incorrecto el login con usuario y contraseña resuelve con false
     await expect(signIn()).resolves.toStrictEqual(false);
   })
 })
@@ -41,16 +44,16 @@ describe('signUp', () => {
     expect(typeof signUp).toBe('function')
   })
   it('usuario registrado', async () => {
+    // indicamos como estamos mockeando la funcion en este caso nos retorna un objeto cuando se resuleve la promesa
     barrel.createUserWithEmailAndPassword.mockImplementation(jest.fn(() => Promise.resolve({ user: { uid: '3zs*MOCK*sT2' } })))
-    // expect(signUp()).toEqual(Promise.resolve())
-    // await expect(signUp()).resolves.toStrictEqual(true);
+    // si es correcto el registro con usuario y contraseña resuelve con un objeto que en la clave resultado es true
     await expect(signUp()).resolves.toStrictEqual({ resultado: true, code: "" });
   })
   it('error', async () => {
     // para el caso de error segun el error mostramos el mensaje
     barrel.createUserWithEmailAndPassword.mockImplementation(jest.fn(() => Promise.resolve({ errorMessage: { message: 'MOCKerror' } })))
-    // expect(signUp()).toEqual(Promise.resolve())
-    // await expect(signUp()).resolves.toStrictEqual(false);
+    // si es incorrecto el registro con usuario y contraseña resuelve con un objeto 
+    // que en la clave resultado es false y en mensaje indicamos undefined porque no es relevante el mensaje
     await expect(signUp()).resolves.toStrictEqual({ resultado: false, code: undefined });
   })
 })

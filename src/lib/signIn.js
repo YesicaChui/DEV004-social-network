@@ -5,37 +5,23 @@ import Firebase from "../firebaseConfig.js";
 const { 
   auth, signInWithEmailAndPassword, update, ref, database,
 } = Firebase;
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
-
-// const database = getDatabase(Firebase);
 
 // lo pongo asincrono para usar el await y esperar su respuesta
-export const signIn = async (email, password) => signInWithEmailAndPassword(auth, email, password)
+export const signIn = (email, password) => signInWithEmailAndPassword(auth, email, password)
   .then((userCredential) => {
-    // Signed in
+    // cuando me logeo correctamente capturo al usuario
     const user = userCredential.user;
-    // ...
+    // obtengo la hora y fecha actual
     const lgDate = new Date();
-    console.log('Que es esto en el signIn', user.email)
+    // actualizo de firebase real time database la fecha y hora del ultimo logeo del usuario
     return update(ref(database, `users/${user.uid}`), {
       last_login: lgDate,
     });
   })
-  .then(() => {
-    // User logged successfully
-    console.log('Usuario logueado!');
-    return true;
-    /*  })
-     .catch((error) => {
-       // Log in failed...
-       alert(error);
-       return false
-     });     */
-  })
+  // si guarda los datos con exito retorna true
+  .then(() => true)
   .catch((error) => {
-    // const errorCode = error.code;
-    const errorMessage = error.message;
-    console.log(errorMessage)
+    console.log(error)
+    // si hay error en el login retornamos false
     return false;
   });

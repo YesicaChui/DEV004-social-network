@@ -5,17 +5,23 @@ import { signIn } from '../lib/signIn.js';
 
 // eventos del registro-dom
 export const registroEventos = (onNavigate) => {
+  // deteccion de correo valido en la casilla inputEmail si coincide con la expresion regular
   document.getElementById('inputEmail').addEventListener('keyup', () => {
     if (document.getElementById('inputEmail').value
       .match(/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/)
     ) {
+      // habilita el boton de Inicio
       document.getElementById('botonInicio').style['pointer-events'] = 'all';
+      // oculta el texto de correo invalido
       document.getElementById('textoCorreoInvalido').style.visibility = 'hidden'
     } else {
+      // inhabilita el boton de Inicio
       document.getElementById('botonInicio').style['pointer-events'] = 'none';
+      // muestra el texto de correo invalido
       document.getElementById('textoCorreoInvalido').style.visibility = 'visible'
     }
   });
+  // agregando evento click para volver al login
   document
     .getElementById('botonAqui')
     .addEventListener('click', () => onNavigate('/'));
@@ -23,8 +29,10 @@ export const registroEventos = (onNavigate) => {
   document.getElementById('botonInicio').addEventListener('click', async () => {
     const email = document.getElementById('inputEmail').value;
     const password = document.getElementById('inputPassword').value;
+    // enviamos a la libreria signUp ( registro) el correo y contraseña y nos devuelve un objeto
     const estaRegistrado = await signUp(email, password);
     if (estaRegistrado.resultado) {
+      // si se registra correctamente entonces nos logeamos y navegamos al timeline
       const estaLogueado = await signIn(email, password);
       if (estaLogueado) {
         onNavigate('/timeline');

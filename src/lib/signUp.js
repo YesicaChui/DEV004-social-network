@@ -7,18 +7,16 @@ const {
 } = Firebase;
 
 export const signUp = async (email, password) => {
-  // Initialize Firebase
-  // const database = getDatabase(FirebaseApp);
-
   try {
+    // creamos un usuario con el correo y contraseña
     const credentialsUser = await createUserWithEmailAndPassword(auth, email, password)
+    // obtenemos sus credenciales
     const user = credentialsUser.user;
+    // guardamos en firebase real time database su correo y contraseña
     await set(ref(database, `users/${user.uid}`), {
       email,
       password,
     })
-    // swal('Usuario en la base de datos!');
-    console.log("los credenciales son:", credentialsUser)
     // retorno un objeto con el valor true en resultado
     return { resultado: true, code: "" };
   } catch (error) {
