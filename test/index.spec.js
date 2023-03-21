@@ -75,6 +75,6 @@ describe('registerGoogle', () => {
     // para el caso de error segun el error mostramos el mensaje
     barrel.signInWithPopup.mockImplementation(jest.fn(() => Promise.resolve({ errorMessage: { message: 'MOCKerror' } })))
     // si es incorrecto el registro con google retorna false 
-       await expect(registerGoogle()).resolves.toStrictEqual(false);
+    await expect(registerGoogle()).resolves.toStrictEqual(false);
   })
 })
